@@ -1,15 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
-import { ChakraProvider, Tab } from '@chakra-ui/react';
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react'
+import { ChakraProvider} from '@chakra-ui/react';
+import { CircularProgress} from '@chakra-ui/react'
 import {
     Box,
-    Text,
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
@@ -36,43 +34,47 @@ function Region() {
 
     console.log(data);
 
-    if (isLoading === false && data.length != 0) {
+    if (isLoading === false && data.length !== 0) {
         return (
             <ChakraProvider>
-            <TableContainer width="50%">
-                <Table variant="striped">
-                    <TableCaption>Data retrieved from PokeAPI.</TableCaption>
-                        <Thead>
-                            <Tr>
-                                <Th fontSize="0.8rem">Search for Pokemon in {data.name.toUpperCase()}:</Th>
-                            </Tr>
-                        </Thead>
-                        <Tbody>
-                        {data.pokemon_entries.map(entry => 
-                            <Tr>
-                                <Td key={entry.id}>
-                                <Link 
-                                to={`/regions/${location.state.id}/${entry.pokemon_species.name}`}
-                                state={{
-                                    pokemon_data: entry.pokemon_species.url,
-                                    name: entry.pokemon_species.name,
-                                    id: entry.id
-                                }}
-                                >{entry.pokemon_species.name.toUpperCase()}
-                                </Link>
-                                </Td>
-                            </Tr>
-                        )}
-                        </Tbody>
-                </Table>
-            </TableContainer>
+                <Box width="100%" letterSpacing="1px">
+                    <TableContainer width="90%" mx="auto">
+                        <Table variant="striped">
+                            <TableCaption>Data retrieved from PokeAPI.</TableCaption>
+                                <Thead>
+                                    <Tr>
+                                        <Th fontSize="0.8rem">Search for Pokemon in {data.name.toUpperCase()}:</Th>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                {data.pokemon_entries.map(entry => 
+                                    <Tr>
+                                        <Td key={entry.id}>
+                                        <Link 
+                                        to={`/regions/${location.state.id}/${entry.pokemon_species.name}`}
+                                        state={{
+                                            pokemon_data: entry.pokemon_species.url,
+                                            name: entry.pokemon_species.name,
+                                            id: entry.id
+                                        }}
+                                        >{entry.pokemon_species.name.toUpperCase()}
+                                        </Link>
+                                        </Td>
+                                    </Tr>
+                                )}
+                                </Tbody>
+                        </Table>
+                    </TableContainer>
+                </Box>
         </ChakraProvider>
         )
     }
     else {
         return (
             <ChakraProvider>
-                <CircularProgress isIndeterminate color='green.300' size='200px'/>
+                <Box width="100%">
+                    <CircularProgress isIndeterminate color='green.300' size='200px' position="relative" top="50%" left="35%"/>
+                </Box>
             </ChakraProvider>
         )
     }

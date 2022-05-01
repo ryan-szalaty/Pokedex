@@ -1,18 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import axios from 'axios';
-import { ChakraProvider, Tab } from '@chakra-ui/react';
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
+import { ChakraProvider} from '@chakra-ui/react';
+import { CircularProgress} from '@chakra-ui/react';
 import {
+    ListItem,
+    UnorderedList,
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
     TableCaption,
     TableContainer,
+    Box,
+    Text,
+    Image
   } from '@chakra-ui/react';
 
 function Pokemon() {
@@ -44,43 +48,60 @@ function Pokemon() {
 
     console.log(data);
 
-    if (isLoading === false && data.length != 0 && image) {
+    if (isLoading === false && data.length !== 0 && image) {
         return (
             <ChakraProvider>    
-                <TableContainer width="90vw">
-                    <Table variant="striped">
-                        <TableCaption>Data retrieved from PokeAPI.</TableCaption>
-                            <Thead width="90%">
-                                <Tr>
-                                    <Th fontSize="0.8rem">Data for {location.state.name}</Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody width="90%">
-                                <Tr>
-                                    <Td><img src={image} /></Td>
-                                </Tr>
-                                <Tr>
-                                   <Td>Base Happiness: {data.base_happiness}</Td>
-                                   <Td>Capture Rate: {data.capture_rate}</Td>
-                                </Tr>
-                                <Tr>
-                                   <Td>Egg Groups: {data.egg_groups.map(group => <p>{group.name.toUpperCase()}</p>)}</Td>
-                                   <Td>Habitat: {data.habitat ? data.habitat.name.toUpperCase() : "UNKNOWN"}</Td>
-                                </Tr>
-                                <Tr>
-                                   <Td>Description:<p>{data.flavor_text_entries[0].flavor_text}</p></Td>
-                                   <Td>Growth Rate: {data.growth_rate.name.toUpperCase()}</Td>
-                                </Tr>
-                            </Tbody>
-                    </Table>
-                </TableContainer>
+                <Box width="80%" height="100%" mx="auto" my="10%" p="20px" display="flex" flexDirection="column" bg="#DCD7D7" border="solid 5px black" letterSpacing="1px">
+                    <Box width="95%" height="95%" display="flex" flexDirection="column" alignItems="center" border="solid 5px gray" mx="auto" my="10px" bg="gray.100">
+                        <Text align="center" mt="20px" fontWeight="700">{location.state.name.toUpperCase()}</Text>
+                        <Image src={image} boxSize="50%"/>
+                        <Text align="center" my="20px" fontWeight="700">Description:</Text>
+                        <Text align="left" width="95%" mb="20px">{data.flavor_text_entries[0].flavor_text}</Text>
+                    </Box>
+                    <Box width="95%" height="95%" display="flex" flexDirection="column" alignItems="left" mx="auto">
+                        <TableContainer width="100%" height="100%">
+                            <Table variant="striped">
+                                <TableCaption>Data Acquired for {location.state.name.toUpperCase()} from PokeAPI</TableCaption>
+                                <Thead>
+                                    <Tr>
+                                        <Th>Stats:</Th>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    <Tr>
+                                        <Td><Text align="left">Base Happiness:</Text></Td>
+                                        <Td><Text align="left">{data.base_happiness}</Text></Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td><Text align="left">Capture Rate:</Text></Td>
+                                        <Td><Text align="left">{data.capture_rate}</Text></Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td><Text align="left">Egg Groups:</Text></Td>
+                                        <Td><UnorderedList align="left">{data.egg_groups.map(group => <ListItem listStyleType="none">{group.name.toUpperCase()}</ListItem>)}</UnorderedList></Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td><Text align="left">Habitat:</Text></Td>
+                                        <Td><Text align="left">{data.habitat ? data.habitat.name.toUpperCase() : "UNKNOWN"}</Text></Td>
+                                    </Tr>
+                                    <Tr>
+                                        <Td><Text align="left">Growth Rate:</Text></Td>
+                                        <Td><Text align="left">{data.growth_rate.name.toUpperCase()}</Text></Td>
+                                    </Tr>
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                </Box>
             </ChakraProvider>
         )
     }
     else {
         return (
             <ChakraProvider>
-                <CircularProgress isIndeterminate color='green.300' size='200px'/>
+                <Box width="100%">
+                    <CircularProgress isIndeterminate color='green.300' size='200px' position="relative" top="200px" left="38.5%"/>
+                </Box>
             </ChakraProvider>
         )
     }
